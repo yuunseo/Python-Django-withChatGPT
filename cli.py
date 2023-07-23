@@ -40,13 +40,21 @@ USER_PROMPT = (
     f"Now, start a conversation with the first sentence!"
 )
 
+RECOMMEND_PROMPT = (
+    f"Can you please provide me an {level_word} example "
+    f"of how to respond to the last sentence "
+    f"in this situation, without providing a translation "
+    f"and any introductory phrases or sentences."
+)
+
 # 전역변수로, 대화 내역을 쌓는 리스트.
 messages = [
     {"role": "system", "content": SYSTEM_PROMPT},
 ]
 
 
-def gpt_query(user_query: str) -> str:
+# gpt의 응답을 받는 함수. skip_save라는 인자를 넣음으로써 대화 내역 누적 여부 결정
+def gpt_query(user_query: str, skip_save: bool = False) -> str:
     "유저 메세지에 대한 응답을 반환합니다."
 
     global messages
@@ -68,13 +76,14 @@ def gpt_query(user_query: str) -> str:
     # 응답에서 우리가 필요한 문자열만 뽑아서 반환한다.
     assistant_message = response["choices"][0]["message"]["content"]
 
-    # 대답한 응답도 messages에 누적이 돼야 하니까 append해 줘야 한다.
-    messages.append(
-        {
-            "role": "assistant",
-            "content": assistant_message,
-        }
-    )
+    if skip_save == False:
+        # 대답한 응답도 messages에 누적이 돼야 하니까 append해 줘야 한다.
+        messages.append(
+            {
+                "role": "assistant",
+                "content": assistant_message,
+            }
+        )
 
     return assistant_message
 
@@ -106,7 +115,10 @@ def main():
     print(f"[assistant] {assistant_message}")
 
     while line := input("[user] ").strip():
-        if line == "!say":
+        if line == "!recommend":
+            recommended_message = gpt_query(RECOMMEND_PROMPT, skip_save=True)
+            print("추천 표현: ", recommended_message)
+        elif line == "!say":
             say(messages[-1]["content"], "en")
         else:
             response = gpt_query(line)
