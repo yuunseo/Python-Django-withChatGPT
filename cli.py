@@ -113,6 +113,7 @@ def main():
     # main함수를 실행하면, USER_PROMPT문자열을 출력해 사용자의 입력을 받아서 넘긴다.
     assistant_message = gpt_query(USER_PROMPT)
     print(f"[assistant] {assistant_message}")
+    say(assistant_message, "en")
 
     while line := input("[user] ").strip():
         if line == "!recommend":
@@ -123,6 +124,7 @@ def main():
         else:
             response = gpt_query(line)
             print(f"[assistant] {response}")
+            say(assistant_message, "en")
 
 
 if __name__ == "__main__":
