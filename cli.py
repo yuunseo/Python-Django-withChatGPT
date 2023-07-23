@@ -1,8 +1,11 @@
 # openai로부터 받은 api_key 사용을 위한 준비
 import os
 import openai
-
+import pygame
+from io import BytesIO
+from tempfile import NamedTemporaryFile
 from dotenv import load_dotenv
+from gtts import gTTS
 
 load_dotenv()
 
@@ -76,14 +79,38 @@ def gpt_query(user_query: str) -> str:
     return assistant_message
 
 
+def play_file(file_path: str) -> None:
+    pygame.mixer.init()
+    pygame.mixer.music.load(file_path)
+    pygame.mixer.music.play()
+
+    while pygame.mixer.music.get_busy():
+        pass
+
+    pygame.mixer.quit()
+
+
+def say(message: str, lang: str) -> None:
+    io = BytesIO()
+
+    gTTS(message, lang=lang).write_to_fp(io)
+
+    with NamedTemporaryFile() as f:
+        f.write(io.getvalue())
+        play_file(f.name)
+
+
 def main():
     # main함수를 실행하면, USER_PROMPT문자열을 출력해 사용자의 입력을 받아서 넘긴다.
     assistant_message = gpt_query(USER_PROMPT)
     print(f"[assistant] {assistant_message}")
 
     while line := input("[user] ").strip():
-        response = gpt_query(line)
-        print(f"[assistant] {response}")
+        if line == "!say":
+            say(messages[-1]["content"], "en")
+        else:
+            response = gpt_query(line)
+            print(f"[assistant] {response}")
 
 
 if __name__ == "__main__":
