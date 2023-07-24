@@ -136,3 +136,9 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # 환경변수인 OPENAI_API_KEY를 문자열로 읽어서 settings.py에 저장한다.
 OPENAI_API_KEY = env.str("OPENAI_API_KEY")
+
+# Bootstrap5 설정
+BOOTSTRAP5 = {
+    "required_css_class": "fw-bold",
+    "set_placeholder": False,
+}
