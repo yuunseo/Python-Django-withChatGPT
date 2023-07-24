@@ -11,10 +11,20 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
+from environ import Env
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Env() 클래스의 인스턴스 생성
+env = Env()
+# .env 파일의 경로를 지정
+env_path = BASE_DIR / ".env"
+# 경로에 파일이 존재한다면,
+if env_path.is_file():
+    # 읽기모드로 파일 열고, 이전에 존재한다면 덮어쓰기 = True
+    with env_path.open("rt", encoding="utf8") as f:
+        env.read_env(f, overwrite=True)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -122,3 +132,6 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# 환경변수인 OPENAI_API_KEY를 문자열로 읽어서 settings.py에 저장한다.
+OPENAI_API_KEY = env.str("OPENAI_API_KEY")
