@@ -15,7 +15,7 @@ class RolePlayingRoom(models.Model):
         RUSSIAN = "ru-RU", "Russian"
 
     # 선택지 생성 class
-    class Level(models.TextChoices):
+    class Level(models.IntegerChoices):
         BEGINNER = 1, "초급"
         ADVANCED = 2, "고급"
 
