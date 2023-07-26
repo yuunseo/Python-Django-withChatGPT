@@ -7,7 +7,7 @@ from .translators import google_translate
 class RolePlayingRoomForm(forms.ModelForm):
     class Meta:
         model = RolePlayingRoom
-        exclude = "user"
+        exclude = ["user"]
 
     # clean method란, 폼 필드 다수에 대한 유효성 검사 수행 및
     # 값의 변환 또한 가능
