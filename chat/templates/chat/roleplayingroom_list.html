@@ -16,8 +16,8 @@
                 <tr>
                     <td>{{ role_playing_room.get_language_display }}</td>
                     <td>{{ role_playing_room.get_level_display }}</td>
-                    <td>
-                        <a href="">
+                    <td> 
+                        <a href="{% url 'role_playing_room_detail' role_playing_room.pk %}">
                             {{ role_playing_room.situation }}
                         </a>
                     </td>
