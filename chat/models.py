@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.urls import reverse
 
 
 # Create your models here.
@@ -59,3 +60,6 @@ class RolePlayingRoom(models.Model):
         verbose_name="GPT 역할 (영문)",
         help_text="GPT 프롬프트에 직접적으로 활용됩니다. 비워두시면, gpt_role 필드를 번역하여 자동 반영됩니다.",
     )
+
+    def get_absolute_url(self) -> str:
+        return reverse("role_playing_room_datail", args=[self.pk])
