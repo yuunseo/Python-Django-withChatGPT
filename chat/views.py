@@ -1,7 +1,7 @@
 from django.forms.models import BaseModelForm
 from django.http import HttpResponse
 from django.shortcuts import render
-from django.views.generic import CreateView
+from django.views.generic import CreateView, UpdateView
 from django.utils.decorators import method_decorator
 from django.contrib.admin.views.decorators import staff_member_required
 from .models import RolePlayingRoom
@@ -26,3 +26,19 @@ class RolePlayingRoomCreateView(CreateView):
 # .as_view()를 통해 클래스의 로직을 활용하는 새로운 뷰 함수를 생성
 # .as_view()를 통해 뷰 호출
 role_playing_room_new = RolePlayingRoomCreateView.as_view()
+
+
+# 마찬가지로 로그인 된 유저가 필요하므로 유효성 확인을 위해 데코레이터.
+@method_decorator(staff_member_required, name="dispatch")
+class RolePlayingRoomUpdateView(UpdateView):
+    model = RolePlayingRoom
+    form_class = RolePlayingRoomForm
+
+    # user 본인의 queryset만 가져오기 위해 구현.
+    def get_queryset(self):
+        qs = super().get_queryset()
+        qs = qs.filter(user=self.request.user)
+        return qs
+
+
+role_playing_room_edit = RolePlayingRoomUpdateView.as_view()
