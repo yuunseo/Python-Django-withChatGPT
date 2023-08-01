@@ -7,7 +7,16 @@ from .translators import google_translate
 class RolePlayingRoomForm(forms.ModelForm):
     class Meta:
         model = RolePlayingRoom
-        exclude = ["user"]  # user는 입력받을 수 없으며, 현재 로그인 되어있는 user가 입력돼야 함. (유효성 검사 필요)
+        fields = [
+            "language",
+            "level",
+            "situation",
+            "situation_en",
+            "my_role",
+            "my_role_en",
+            "gpt_role",
+            "gpt_role_en",
+        ]  # user는 입력받을 수 없으며, 현재 로그인 되어있는 user가 입력돼야 함. (유효성 검사 필요)
 
     # clean method란, 폼 필드 다수에 대한 유효성 검사 수행 및
     # 값의 변환 또한 가능
