@@ -115,8 +115,6 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
-
 TIME_ZONE = "UTC"
 
 USE_I18N = True
@@ -133,6 +131,9 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# 기존 settings.py파일에 LANGUAGE_CODE 설정 존재. 그 코드 변경.
+LANGUAGE_CODE = env.str("LANGUAGE_CODE", default="en-us")
 
 # 환경변수인 OPENAI_API_KEY를 문자열로 읽어서 settings.py에 저장한다.
 OPENAI_API_KEY = env.str("OPENAI_API_KEY")
