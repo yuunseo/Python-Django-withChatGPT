@@ -48,11 +48,11 @@
                     <ul id="chat-message-list"></ul>
                 </div>
                 <div class="card-footer">
-                  <div class="d-grid gap-2 mb-2">
-                    <button id="auto-play-button" class="btn btn-primary">
-                        자동 읽기 시작
-                    </button>
-                </div>
+                    <div class="d-grid gap-2 mb-2">
+                        <button id="auto-play-button" class="btn btn-primary">
+                            자동 읽기 시작
+                        </button>
+                    </div>
                     <div class="d-flex gap-2">
                         <button class="btn btn-secondary" id="recommend-button">추천받기</button>
                         <form id="message-form" class="d-flex gap-1 flex-grow-1">
@@ -77,6 +77,7 @@
 {% block script %}
 {{ roleplayingroom.pk|json_script:"room-pk" }}
 {{ roleplayingroom.language|json_script:"room-language" }}
+
 <script>
 function sayMessage(message, language) {
     const lang = language.split("-")[0];  // en-US => en
@@ -85,19 +86,22 @@ function sayMessage(message, language) {
     audio.src = voiceUrl;
     audio.play();
 }
+
 function addMessage(message, isMe) {
-const messageList = document.getElementById("chat-message-list");
-const messageElement = document.createElement("li");
-messageElement.className = "chat-message" + (isMe ? " me" : "");
-messageElement.innerHTML = `
+    const messageList = document.getElementById("chat-message-list");
+    const messageElement = document.createElement("li");
+    messageElement.className = "chat-message" + (isMe ? " me" : "");
+    messageElement.innerHTML = `
         <span class="message">${message}</span>
         <span class="say">읽어주기</span>
-    `;messageList.appendChild(messageElement);
-messageList.scrollTop = messageList.scrollHeight;
-}
-messageElement.querySelector(".say").addEventListener("click", () => {
-  sayMessage(message, room_language);
+    `;
+    messageList.appendChild(messageElement);
+    messageList.scrollTop = messageList.scrollHeight;
+
+    messageElement.querySelector(".say").addEventListener("click", () => {
+      sayMessage(message, room_language);
     });
+}
 
 let is_auto_play = false;
 const room_pk = document.querySelector("#room-pk").textContent;
@@ -110,9 +114,9 @@ ws.onerror = function(e) { console.error("장고 채널스 서버와의 웹소�
 
 ws.onmessage = function(e) {
   console.group("[onmessage]");
+
   const message_obj = JSON.parse(e.data);
 
-  ///assistant-message type에 대해서만 message출력 중.
   if ( message_obj.type === "assistant-message" ) {
     const { message } = message_obj;
     console.log("assistant-message :", message);
@@ -124,12 +128,13 @@ ws.onmessage = function(e) {
   else if ( message_obj.type === "recommended-message" ) {
     const { message } = message_obj;
     console.log("recommended-message :", message);
-    document.querySelector("#message-form[name='message']").value = message;
+    document.querySelector("#message-form [name='message']").value = message;
     recommendButton.disabled = false;
   }
   else {
     console.error("알 수 없는 메시지 타입입니다.", message_obj);
   }
+
   console.groupEnd();
 };
 
@@ -149,7 +154,6 @@ recommendButton.addEventListener("click", () => {
   recommendButton.disabled = true;
   ws.send(JSON.stringify({ type: "request-recommend-message" }));
 });
-
 
 const autoPlayButton = document.querySelector("#auto-play-button");
 autoPlayButton.addEventListener("click", () => {
