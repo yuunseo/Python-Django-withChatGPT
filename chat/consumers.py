@@ -26,7 +26,7 @@ class RolePlayingRoomConsumer(JsonWebsocketConsumer):
             # gpt의 추천 표현
             self.recommend_message = room.get_recommend_message()
             # gpt의 초기 설정
-            assistant_message = self.gpt_query()
+            assistant_message = self.get_query()
             # client로 전송
             self.send_json(
                 {
@@ -79,7 +79,7 @@ class RolePlayingRoomConsumer(JsonWebsocketConsumer):
         return room
 
     # openai api함수를 호출하는 메소드
-    def gpt_query(self, command_query: str = None, user_query: str = None) -> str:
+    def get_query(self, command_query: str = None, user_query: str = None) -> str:
         if command_query is not None and user_query is not None:
             raise ValueError("command_query 인자와 user_query 인자는 동시에 사용할 수 없습니다.")
         elif command_query is not None:
