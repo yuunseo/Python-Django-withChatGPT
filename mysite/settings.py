@@ -80,6 +80,7 @@ TEMPLATES = [
     },
 ]
 
+# ASGI 구동을 위한 추가 설정
 WSGI_APPLICATION = "mysite.wsgi.application"
 ASGI_APPLICATION = "mysite.asgi.application"
 
