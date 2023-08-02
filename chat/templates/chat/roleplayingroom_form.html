@@ -6,7 +6,7 @@
         <form action="" method="post" novalidate>
             {% csrf_token %}
             <div class="card-header">
-                상황 {% if form.instance.pk %} 수정하기 {% else %} 만들기 {% endif %}
+                상황 {% if form.instance.pk %}수정하기{% else %}만들기{% endif %}
             </div>
             <div class="card-body">{% bootstrap_form form layout="horizontal" %}</div>
             <div class="card-footer text-end">
