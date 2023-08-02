@@ -67,7 +67,7 @@ class RolePlayingRoom(models.Model):
     )
 
     def get_absolute_url(self) -> str:
-        return reverse("role_playing_room_datail", args=[self.pk])
+        return reverse("role_playing_room_detail", args=[self.pk])
 
     def get_initial_messages(self) -> List[GptMessage]:
         gpt_name = "RolePlayingBot"
