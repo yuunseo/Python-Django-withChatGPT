@@ -95,7 +95,7 @@ class RolePlayingRoomConsumer(JsonWebsocketConsumer):
         response_role = response_dict["choices"][0]["message"]["role"]
         response_content = response_dict["choices"][0]["message"]["content"]
 
-        # command_query 수행 시에는 대화 내역 저장 안하고, 그 외에만 저장.
+        # 추천기능 시에는 대화내역에 추가 안함.
         if command_query is None:
             gpt_message = GptMessage(role=response_role, content=response_content)
             self.gpt_messages.append(gpt_message)
